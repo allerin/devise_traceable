@@ -10,19 +10,17 @@ All gems are on gemcutter, so you need to add gemcutter to your sources if you h
 
 Install devise_traceable gem, it should install dependencies (such as devise and warden):
 
-  sudo gem install devise_traceable
+  gem install devise_traceable
 
-Configure devise_traceable inside your app (and warden and devise if you weren't using them):
+Add devise_traceable in your Gemfile:
 
-  gem 'warden'
-  gem 'devise'
   gem 'devise_traceable'
 
 == Usage
 
    rails g devise_traceable User
 
-   in User Model add :traceable as follow
+  # in User Model add :traceable as following if not present
 
   class User < ActiveRecord::Base
     devise :database_authenticatable, ..... , :traceable

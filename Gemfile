@@ -1,6 +1,4 @@
-source "http://rubygems.org"
+source 'https://rubygems.org'
 
-gem 'rails', "3.0.0.beta4"
-gem 'mysql'
-gem 'warden'
-gem 'devise'
+# Specify your gem's dependencies in devise_traceable.gemspec
+gemspec

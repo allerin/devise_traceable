@@ -7,7 +7,7 @@ class DeviseTraceableGenerator < Rails::Generators::NamedBase
     ' also generates devise model if does not exist.'
 
   def self.source_root
-    @_devise_source_root ||= File.expand_path("../templates", __FILE__)
+    @_devise_source_root ||= File.expand_path('../templates', __FILE__)
   end
 
   def self.orm_has_migration?
@@ -42,6 +42,12 @@ class DeviseTraceableGenerator < Rails::Generators::NamedBase
     migration_template 'migration.rb', "db/migrate/devise_create_#{name.underscore}_tracings.rb"
   end
 
+  def inject_devise_traceable_option
+    if model_exists? && !File.read(model_path).include?(':traceable')
+      inject_into_file(model_path, 'traceable, :', :after => 'devise :')
+    end
+  end
+
   protected
 
   def model_exists?
@@ -49,6 +55,6 @@ class DeviseTraceableGenerator < Rails::Generators::NamedBase
   end
 
   def model_path
-    @model_path ||= File.join("app", "models", "#{file_path}.rb")
+    @model_path ||= File.join('app', 'models', "#{file_path}.rb")
   end
 end
