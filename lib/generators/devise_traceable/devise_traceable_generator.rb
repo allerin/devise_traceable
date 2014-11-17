@@ -42,7 +42,7 @@ class DeviseTraceableGenerator < Rails::Generators::NamedBase
   end
 
   def create_migration_file
-    migration_template 'migration.rb', "db/migrate/devise_create_#{name.downcase}_tracings.rb"
+    migration_template 'migration.rb', "db/migrate/devise_create_#{name.underscore}_tracings.rb"
   end
 
   protected
