@@ -3,8 +3,8 @@ require 'rails/generators/migration'
 class DeviseTraceableGenerator < Rails::Generators::NamedBase
   include Rails::Generators::Migration
 
-  desc "Generates a model with the given NAME (if one does not exist) with devise " <<
-    "configuration plus a migration file and devise routes."
+  desc 'Generates a tracing model to trace devise model with the given NAME' <<
+    ' also generates devise model if does not exist.'
 
   def self.source_root
     @_devise_source_root ||= File.expand_path("../templates", __FILE__)
@@ -26,17 +26,14 @@ class DeviseTraceableGenerator < Rails::Generators::NamedBase
   class_option :migration, :type => :boolean, :default => orm_has_migration?
 
   def invoke_orm_model
-    if model_exists?
-      say "* Model already exists."
-    elsif options[:orm].present?
-      invoke "model", ["#{name}Tracing"], :migration => false, :orm => options[:orm]
-
+    if options[:orm].present?
       unless model_exists?
-        abort "Tried to invoke the model generator for '#{options[:orm]}' but could not find it.\n" <<
-          "Please create your model by hand before calling `rails g devise_traceable #{name}`."
+        invoke 'devise', [name]
       end
+      inject_devise_traceable_option
+      Rails::Generators.invoke 'model', ["#{name}Tracing", '--no-migration']
     else
-      abort "Cannot create a devise model because config.generators.orm is blank.\n" <<
+      abort "Cannot create a '#{name}Tracing' model because config.generators.orm is blank.\n" <<
         "Please create your model by hand or configure your generators orm before calling `rails g devise_traceable #{name}`."
     end
   end
